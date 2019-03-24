@@ -153,7 +153,7 @@ class DiscordEmbed
     }
 
     /**
-     * Set the color of the embed.
+     * Set the color of the embed. Valid value <= 16777215
      *
      * @param  integer  $color
      * @return $this

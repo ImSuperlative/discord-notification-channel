@@ -61,6 +61,7 @@ class DiscordWebhookChannel
             'file' => data_get($message, 'file'),
             'payload_json' => data_get($message, 'payload_json'),
         ]);
+
         return array_merge([
             'json' => array_merge([
                 'content' => $message->content,
@@ -114,6 +115,7 @@ class DiscordWebhookChannel
             if ($value instanceof DiscordEmbedField) {
                 return $value->toArray();
             }
+
             return ['name' => $key, 'value' => $value, 'inline' => true];
         })->values()->all();
     }
