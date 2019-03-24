@@ -19,11 +19,11 @@ class DiscordEmbedField
     protected $content;
 
     /**
-     * Whether the content is short.
+     * Whether the content is inline.
      *
-     * @var bool $short
+     * @var bool $inline
      */
-    protected $short = true;
+    protected $inline = true;
 
     /**
      * Set the title of the field.
@@ -56,9 +56,9 @@ class DiscordEmbedField
      *
      * @return $this
      */
-    public function inline()
+    public function long()
     {
-        $this->short = false;
+        $this->inline = false;
 
         return $this;
     }
@@ -73,7 +73,7 @@ class DiscordEmbedField
         return [
             'name'   => $this->title,
             'value'  => $this->content,
-            'inline' => $this->short,
+            'inline' => $this->inline,
         ];
     }
 }
