@@ -49,6 +49,11 @@ class DiscordMessage
     public $file;
 
     /**
+     * @var array
+     */
+    public $attachments = [];
+
+    /**
      * The message's embeds.
      *
      * @var array $embeds
@@ -169,6 +174,19 @@ class DiscordMessage
     public function file($file)
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Add a file of the Discord message.
+     *
+     * @param  array  $file
+     * @return $this
+     */
+    public function addAttachment($file)
+    {
+        $this->attachments[] = $file;
 
         return $this;
     }
