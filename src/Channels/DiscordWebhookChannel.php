@@ -41,9 +41,16 @@ class DiscordWebhookChannel
         if (! $url = $notifiable->routeNotificationFor('discord', $notification)) {
             return;
         }
-        $this->http->post($url, $this->buildJsonPayload(
-            $notification->toDiscord($notifiable)
-        ));
+
+        /** @var \Illuminate\Notifications\Messages\DiscordMessage $message */
+        $message = $notification->toDiscord($notifiable);
+        if ($message->attachments && !empty($message->attachments)) {
+            $payload = $this->buildJsonFilePayload($message);
+        } else {
+            $payload = $this->buildJsonPayload($message);
+        }
+
+        $this->http->post($url, $payload);
     }
 
     /**
@@ -68,6 +75,21 @@ class DiscordWebhookChannel
                 'embeds' => $this->embeds($message),
             ], $optionalFields),
         ], $message->http);
+    }
+
+    /**
+     * Build up a JSON payload for the discord webhook.
+     *
+     * @param  \Illuminate\Notifications\Messages\DiscordMessage  $message
+     * @return array
+     */
+    protected function buildJsonFilePayload(DiscordMessage $message)
+    {
+        return [
+            'multipart' => array_merge($message->attachments, [
+                ['name' => 'payload_json', 'contents' => json_encode($this->buildJsonPayload($message)['json'])]
+            ])
+        ];
     }
 
     /**
